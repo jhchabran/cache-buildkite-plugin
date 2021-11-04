@@ -131,7 +131,7 @@ function cache() {
     TMP_FILE="$(mktemp)"
     echo -e ${TMP_FILE}
     echo -e "You may have get error for TMP_FILE instead of actual cache directory. I suspect from this..."
-    stat -c "%a %n" ${TMP_FILE}
+    # stat -c "%a %n" ${TMP_FILE}
     echo -e "Print targets..."
     echo ${TAR_TARGETS}
     echo -e "Print argument list"
