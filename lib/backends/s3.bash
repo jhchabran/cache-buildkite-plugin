@@ -123,9 +123,19 @@ function cache() {
   fi
 
   cache_locating "${TAR_TARGETS}"
+  ls -a .
+  pwd
   TAR_FILE="${CACHE_KEY}.${BK_TAR_EXTENSION}"
+  echo -e ${TAR_FILE}
   if [ ! -f "$TAR_FILE" ]; then
     TMP_FILE="$(mktemp)"
+    echo -e ${TMP_FILE}
+    echo -e "You may have get error for TMP_FILE instead of actual cache directory. I suspect from this..."
+    stat -c "%a %n" ${TMP_FILE}
+    echo -e "Print targets..."
+    echo ${TAR_TARGETS}
+    echo -e "Print argument list"
+    echo "${BK_TAR_ARGS[@]} ${TMP_FILE} ${TAR_TARGETS}"
     tar "${BK_TAR_ARGS[@]}" "${TMP_FILE}" ${TAR_TARGETS}
     mv -f "${TMP_FILE}" "${TAR_FILE}"
     aws s3 cp ${BK_CUSTOM_AWS_ARGS} "${TAR_FILE}" "s3://${BUCKET}/${TAR_FILE}"
