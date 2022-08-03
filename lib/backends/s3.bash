@@ -102,7 +102,7 @@ function restore() {
   fi
 
   if [[ ! "${BK_AWS_FOUND}" =~ (false) ]]; then
-    aws s3 cp ${BK_CUSTOM_AWS_ARGS} "s3://${BUCKET}/${TAR_FILE}" .
+    aws s3 cp --no-progress ${BK_CUSTOM_AWS_ARGS} "s3://${BUCKET}/${TAR_FILE}" .
     bsdtar ${BK_TAR_EXTRACT_ARGS} "${TAR_FILE}" -C .
   else
     cache_restore_skip "s3://${BUCKET}/${TAR_FILE}"
@@ -128,7 +128,7 @@ function cache() {
     TMP_FILE="$(mktemp)"
     bsdtar "${BK_TAR_ARGS[@]}" "${TMP_FILE}" ${TAR_TARGETS}
     mv -f "${TMP_FILE}" "${TAR_FILE}"
-    aws s3 cp ${BK_CUSTOM_AWS_ARGS} "${TAR_FILE}" "s3://${BUCKET}/${TAR_FILE}"
+    aws s3 cp --no-progress ${BK_CUSTOM_AWS_ARGS} "${TAR_FILE}" "s3://${BUCKET}/${TAR_FILE}"
   fi
   rm -f "${TAR_FILE}"
 }
