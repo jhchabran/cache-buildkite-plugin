@@ -126,7 +126,16 @@ function cache() {
   TAR_FILE="${CACHE_KEY}.${BK_TAR_EXTENSION}"
   if [ ! -f "$TAR_FILE" ]; then
     TMP_FILE="$(mktemp)"
-    bsdtar "${BK_TAR_ARGS[@]}" "${TMP_FILE}" ${TAR_TARGETS}
+
+    # only add tar targets that exist
+    for target in "${TAR_TARGETS[@]}"; do
+        if [ -e "$target" ]; then
+            bsdtar "${BK_TAR_ARGS[@]}" -r -f "${TMP_FILE}" "${target}"
+        else
+            echo "skipping ${target} as it does not exist"
+        fi
+    done
+
     mv -f "${TMP_FILE}" "${TAR_FILE}"
     aws s3 cp --no-progress ${BK_CUSTOM_AWS_ARGS} "${TAR_FILE}" "s3://${BUCKET}/${TAR_FILE}"
   fi
