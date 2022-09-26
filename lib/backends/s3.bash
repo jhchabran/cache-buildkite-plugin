@@ -125,7 +125,7 @@ function cache() {
   # check that all the targets exist
   for target in "${TAR_TARGETS[@]}"; do
       if [ ! -e "$target" ]; then
-          echo "cache target '$target' does not exit - not creating tar cache and exiting"
+          echo "🚧 cache target '$target' does not exit - not creating tar cache and exiting"
           exit 0
       fi
   done
@@ -134,7 +134,7 @@ function cache() {
   TAR_FILE="${CACHE_KEY}.${BK_TAR_EXTENSION}"
   if [ ! -f "$TAR_FILE" ]; then
     TMP_FILE="$(mktemp)"
-    bsdtar "${BK_TAR_ARGS[@]}" "${TMP_FILE}" "${TAR_TARGETS}"
+    bsdtar "${BK_TAR_ARGS[@]}" "${TMP_FILE}" ${TAR_TARGETS}
     mv -f "${TMP_FILE}" "${TAR_FILE}"
     aws s3 cp --no-progress ${BK_CUSTOM_AWS_ARGS} "${TAR_FILE}" "s3://${BUCKET}/${TAR_FILE}"
   fi
