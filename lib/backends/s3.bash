@@ -127,6 +127,7 @@ function cache() {
     echo "🍲 '$target'"  
     pwd
     ls -al
+    ls -al .yarn/
     echo "🍲"  
       if [ ! -e "$target" ]; then
           echo "🚧 cache target '$target' does not exist - not creating tar cache and exiting"
