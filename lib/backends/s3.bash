@@ -125,6 +125,9 @@ function cache() {
   # check that all the targets exist
   for target in "${TAR_TARGETS[@]}"; do
       if [ ! -e "$target" ]; then
+          echo "🍲"  
+          pwd
+          echo "🍲"  
           echo "🚧 cache target '$target' does not exist - not creating tar cache and exiting"
           exit 0
       fi
